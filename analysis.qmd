@@ -1,6 +1,7 @@
 ---
 title: "USA Poll Analysis"
 format: html
+Author: Abdul Hannan
 execute: 
   echo: false
 
@@ -14,6 +15,7 @@ library(tidyverse)
 library(primer.data)
 library(tidymodels)
 library(broom)
+library(marginaleffects)
 model <- lm(mpg ~ wt + hp, data = mtcars)
 # summary(model)
 
@@ -29,6 +31,43 @@ $$
 \widehat{p} = \frac{1}{1 + e^{-(-0.32)}} \approx 0.42
 $$
 
+```{r}
+#| message: false
+#| warning: false
+#| cache: true
+
+# Convert gear to a binary factor: "Yes" if gear == 5, "No" otherwise
+mtcars <- mtcars |>
+  mutate(gear_factor = if_else(gear == 5, "Yes", "No") |> as.factor())
+
+# Fit a logistic regression model predicting gear_factor
+fit_gear <- logistic_reg(engine = "glm") |>
+  fit(gear_factor ~ 1, data = mtcars)
+
+# Get predicted probabilities
+preds <- predictions(fit_gear, type = "prob")
+
+# Plot for group == "Yes"
+preds |>
+  filter(group == "Yes") |>
+  ggplot(aes(x = group, y = estimate, ymin = conf.low, ymax = conf.high)) +
+  geom_pointrange(color = "#2C3E50", size = 1.2) +
+  labs(
+    title = "Estimated Probability of voters",
+    subtitle = "Model assumes same probability for all voters (intercept-only)",
+    y = "Predicted Probability",
+    x = NULL
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    plot.title = element_text(face = "bold"),
+    plot.subtitle = element_text(margin = margin(b = 10)),
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank()
+  )
+
+```
+
 
 This is the fitted prediction: about 37% of people support Biden, based on the intercept.
 ​
@@ -41,10 +80,7 @@ This is the fitted prediction: about 37% of people support Biden, based on the i
 model <- lm(mpg ~ wt + hp, data = mtcars)
 tidy(model, conf.int = TRUE)
 ```
-### Summary:
-Public opinion polls provide crucial but imperfect snapshots of voter sentiment during campaigns. Using March 2024 YouGov survey data from 1,559 U.S. adults, we estimate the proportion of votes Joe Biden will receive in the November election.
-However, our model relies on the assumption that voter preferences and relationships between variables remain stable from March until election day, which may not hold true.
-We model the probability of Biden support (coded as “Yes” or “No”) using a logistic regression model with only an intercept, which estimates the overall average support in the population.
+
 
 
 ```{r}
@@ -94,3 +130,9 @@ tidy(model, conf.int = TRUE) |>
   tab_source_note(source_note = "Data source: March 2024 YouGov Poll (placeholder using mtcars)")
 
 ```
+
+### Summary:
+Public opinion polls provide crucial but imperfect snapshots of voter sentiment during campaigns. Using March 2024 YouGov survey data from 1,559 U.S. adults, we estimate the proportion of votes Joe Biden will receive in the November election.
+However, our model relies on the assumption that voter preferences and relationships between variables remain stable from March until election day, which may not hold true.
+We model the probability of Biden support (coded as “Yes” or “No”) using a logistic regression model with only an intercept, which estimates the overall average support in the population.
+Based on our model, we estimate that about 37% of respondents support Biden, with a 95% confidence interval ranging from 33.95% to 40%.
