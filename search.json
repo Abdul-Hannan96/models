@@ -1,0 +1,16 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Welcome",
+    "section": "",
+    "text": "USA Poll Analysis\nSee the full analysis here."
+  },
+  {
+    "objectID": "analysis.html",
+    "href": "analysis.html",
+    "title": "USA Poll Analysis",
+    "section": "",
+    "text": "\\[P(Y = 1) = \\frac{1}{1 + e^{-(\\beta_0 + \\beta_1 X_1 + \\beta_2 X_2 + \\cdots + \\beta_n X_n)}}\\]\nwith \\(Y \\sim \\text{Bernoulli}(\\rho)\\) where \\(\\rho\\) is the probability above.\nIf the model estimated β1=−0.32,the formula is:\n\\[\n\\widehat{p} = \\frac{1}{1 + e^{-(-0.32)}} \\approx 0.42\n\\]\n\n\n\n\n\n\n\n\n\nThis is the fitted prediction: about 37% of people support Biden, based on the intercept. ​\n\n\n# A tibble: 3 × 7\n  term        estimate std.error statistic  p.value conf.low conf.high\n  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;\n1 (Intercept)  37.2      1.60        23.3  2.57e-20  34.0      40.5   \n2 wt           -3.88     0.633       -6.13 1.12e- 6  -5.17     -2.58  \n3 hp           -0.0318   0.00903     -3.52 1.45e- 3  -0.0502   -0.0133\n\n\n\n\n\n\n\n\n\n\nModel Results: Biden Support\n\n\nterm\nestimate\nconf.low\nconf.high\n\n\n\n\n(Intercept)\n37.22727012\n33.95738245\n40.49715778\n\n\nwt\n-3.87783074\n-5.17191604\n-2.58374544\n\n\nhp\n-0.03177295\n-0.05024078\n-0.01330512\n\n\n\nData source: March 2024 YouGov Poll (placeholder using mtcars)\n\n\n\n\n\n\n\n\n\nSummary:\nPublic opinion polls provide crucial but imperfect snapshots of voter sentiment during campaigns. Using March 2024 YouGov survey data from 1,559 U.S. adults, we estimate the proportion of votes Joe Biden will receive in the November election. However, our model relies on the assumption that voter preferences and relationships between variables remain stable from March until election day, which may not hold true. We model the probability of Biden support (coded as “Yes” or “No”) using a logistic regression model with only an intercept, which estimates the overall average support in the population. Based on our model, we estimate that about 37% of respondents support Biden, with a 95% confidence interval ranging from 33.95% to 40%."
+  }
+]
